@@ -1,0 +1,27 @@
+{
+  "choices": {
+    "pclass": [
+      "1",
+      "2",
+      "3"
+    ],
+    "sex": [
+      "female",
+      "male"
+    ],
+    "embarked": [
+      "C",
+      "Q",
+      "S"
+    ]
+  },
+  "defaults": {
+    "pclass": "3",
+    "sex": "male",
+    "embarked": "S",
+    "age": 28.0,
+    "sibsp": 0.0,
+    "parch": 0.0,
+    "fare": 14.4542
+  }
+}
