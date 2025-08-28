@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h1 class="h4 mb-4">Titanic Survival Prediction</h1>
+          <form method="post" action="{{ url_for('predict') }}">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label for="pclass" class="form-label">Passenger Class</label>
+                <select class="form-select" id="pclass" name="pclass" required>
+                  {% for v in choices.get('pclass', []) %}
+                    <option value="{{ v }}" {% if (values and values.get('pclass') == v) or (not values and defaults.get('pclass') == v) %}selected{% endif %}>{{ v }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="sex" class="form-label">Sex</label>
+                <select class="form-select" id="sex" name="sex" required>
+                  {% for v in choices.get('sex', []) %}
+                    <option value="{{ v }}" {% if (values and values.get('sex') == v) or (not values and defaults.get('sex') == v) %}selected{% endif %}>{{ v|capitalize }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="embarked" class="form-label">Embarked</label>
+                <select class="form-select" id="embarked" name="embarked" required>
+                  {% for v in choices.get('embarked', []) %}
+                    <option value="{{ v }}" {% if (values and values.get('embarked') == v) or (not values and defaults.get('embarked') == v) %}selected{% endif %}>{{ v }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-md-3">
+                <label for="age" class="form-label">Age</label>
+                <input type="number" step="1" min="0" max="100" class="form-control" id="age" name="age" value="{{ (values and values.get('age')) or defaults.get('age') }}" required>
+              </div>
+              <div class="col-md-3">
+                <label for="sibsp" class="form-label">Siblings/Spouses</label>
+                <input type="number" step="1" min="0" class="form-control" id="sibsp" name="sibsp" value="{{ (values and values.get('sibsp')) or defaults.get('sibsp') }}" required>
+              </div>
+              <div class="col-md-3">
+                <label for="parch" class="form-label">Parents/Children</label>
+                <input type="number" step="1" min="0" class="form-control" id="parch" name="parch" value="{{ (values and values.get('parch')) or defaults.get('parch') }}" required>
+              </div>
+              <div class="col-md-3">
+                <label for="fare" class="form-label">Fare</label>
+                <input type="number" step="0.01" min="0" class="form-control" id="fare" name="fare" value="{{ (values and values.get('fare')) or defaults.get('fare') }}" required>
+              </div>
+
+              <div class="col-12 d-grid d-md-flex justify-content-md-end gap-2 mt-2">
+                <button type="submit" class="btn btn-primary">Predict</button>
+                <a class="btn btn-outline-secondary" href="{{ url_for('index') }}">Reset</a>
+              </div>
+            </div>
+          </form>
+
+          {% if error %}
+            <div class="alert alert-danger mt-4">{{ error }}</div>
+          {% endif %}
+
+          {% if result %}
+            <div class="mt-4">
+              <h2 class="h5">Survival Probability</h2>
+              <div class="progress" role="progressbar" aria-label="Survival probability" aria-valuenow="{{ result.percent }}" aria-valuemin="0" aria-valuemax="100" style="height: 32px;">
+                <div class="progress-bar bg-success" style="width: {{ result.percent }}%">{{ result.percent }}%</div>
+              </div>
+              <p class="text-muted mt-2">This is the model's estimated chance that this passenger would survive.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
